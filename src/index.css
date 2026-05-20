@@ -10,6 +10,20 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+@keyframes laser-slide {
+  0% { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.6)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 25px rgba(245, 158, 11, 1)); }
+}
+
 @media print {
   @page {
     size: A4 portrait;

@@ -30,6 +30,15 @@ export default function App() {
   const [toastData, setToastData] = useState<{user: string, rolls: number, visible: boolean}>({user: '', rolls: 0, visible: false});
   const [hardwareMasking, setHardwareMasking] = useState(true);
   const [antiBan, setAntiBan] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const generateRandomActivity = () => {
     const names = ['Ax***', 'Gh***', 'Di***', 'Sa***', 'Mo***', 'Us***', 'Ma***'];
@@ -137,7 +146,7 @@ export default function App() {
   const cashPackages = [5000000, 10000000, 25000000, 99999999];
 
   return (
-    <div className="min-h-screen bg-[#030712] font-mono text-slate-300 selection:bg-blue-500/30 flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-[#030712] font-mono text-slate-300 selection:bg-blue-500/30 flex flex-col relative w-full">
       
       {/* ULTRA TRUSTABLE BACKGROUND */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -168,39 +177,86 @@ export default function App() {
       </div>
 
       {/* TOP PREMIUM NAV BAR */}
-      <header className="relative z-20 border-b border-white/5 bg-[#030508]/90 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3 sm:gap-5 border border-white/10 bg-white/5 pr-4 pl-3 py-2 rounded-2xl shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]">
-               <img src="https://i.ibb.co/211K4w5C/lota.png" alt="Monopoly Go Server" className="h-8 sm:h-10 select-none drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
-               <div className="h-8 w-px bg-white/10"></div>
-               <div className="flex flex-col">
-                  <span className="text-[9px] sm:text-[10px] md:text-[11px] text-amber-400 font-black tracking-[0.2em] uppercase flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)] whitespace-nowrap">
-                     <ShieldCheck className="w-3 h-3 sm:w-4 sm:h-4" /> Verified Gateway
-                  </span>
-                  <span className="text-[8px] sm:text-[9px] text-emerald-400 font-bold tracking-widest flex items-center gap-1 whitespace-nowrap">
-                     <Lock className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> SECURE TUNNEL ACTIVE
-                  </span>
+      <header className={`sticky top-0 z-50 transition-all duration-300 before:absolute before:inset-0 before:bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] before:opacity-[0.03] before:pointer-events-none ${isScrolled ? 'bg-[#020408]/80 backdrop-blur-3xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] border-b border-white/10 py-1' : 'bg-gradient-to-b from-[#020408] to-[#04070e] border-b border-white/5 py-0'}`}>
+         {/* Subtle top edge glow */}
+         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-500/30 to-transparent"></div>
+         
+         <div className={`max-w-[1400px] mx-auto px-3 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 relative z-10 transition-all duration-300 ${isScrolled ? 'py-1 sm:py-2' : 'py-3 sm:py-4'}`}>
+            
+            {/* BRAND & SECURITY BADGE */}
+            <div className="w-full md:w-auto flex items-center justify-between md:justify-start gap-3 sm:gap-5">
+               <div className="w-full md:w-auto flex items-center justify-between md:justify-start gap-2 sm:gap-3 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent pr-3 md:pr-4 pl-2 py-1.5 sm:py-2 rounded-xl border border-amber-500/30 shadow-[inset_0_0_30px_rgba(245,158,11,0.05),0_0_15px_rgba(245,158,11,0.1)] relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:animate-[shimmer_2s_infinite]"></div>
+                  
+                  <div className="flex items-center gap-2 sm:gap-3">
+                     <div className="relative">
+                        <div className="absolute -inset-1 bg-amber-500/30 blur-md rounded-full animate-pulse"></div>
+                        <img src="https://i.ibb.co/211K4w5C/lota.png" alt="Monopoly Go Server" className="relative h-7 sm:h-9 select-none drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] transform group-hover:scale-105 transition-transform" />
+                     </div>
+                     <div className="h-7 w-px bg-amber-500/20"></div>
+                     <div className="flex flex-col justify-center">
+                        <span className="text-[10px] sm:text-[11px] text-amber-400 font-black tracking-[0.2em] uppercase flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)] whitespace-nowrap">
+                           <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Verified Gateway
+                        </span>
+                        <span className="text-[8px] sm:text-[9px] text-emerald-400 font-bold tracking-widest flex items-center gap-1 whitespace-nowrap mt-0.5">
+                           <Lock className="w-2.5 h-2.5 sm:w-3 sm:h-3 opacity-80" /> SECURE TUNNEL
+                        </span>
+                     </div>
+                  </div>
+
+                  {/* Mobile only right-side micro indicator */}
+                  <div className="md:hidden flex items-center gap-1.5 bg-[#0A0F1C]/80 border border-emerald-500/30 px-2 py-1 rounded-md shadow-[inset_0_0_10px_rgba(16,185,129,0.1)] z-10">
+                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+                     <span className="text-[9px] text-emerald-400 font-bold uppercase tracking-widest font-mono">{apiPing}ms</span>
+                  </div>
                </div>
             </div>
-            <div className="flex items-center gap-4 sm:gap-8 w-full md:w-auto justify-between md:justify-end">
-               <div className="flex flex-col items-start md:items-end">
-                  <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">Server Load</span>
-                  <span className="text-[10px] sm:text-xs text-emerald-400 font-bold flex items-center gap-1.5 drop-shadow-sm">
-                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
-                     Low ({apiPing}ms)
+
+            {/* SERVER METRICS (PC FULL, MOBILE COMPACT ROW) */}
+            <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-3 sm:gap-6 bg-[#090E1A]/95 md:bg-transparent border border-slate-600/80 md:border-none p-2.5 sm:p-0 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.4),inset_0_1px_10px_rgba(255,255,255,0.05)] md:shadow-none mt-1 md:mt-0">
+               
+               {/* Server Load */}
+               <div className="flex flex-row md:flex-col items-center md:items-end gap-2 md:gap-0 pl-1 md:pl-0">
+                  <span className="text-[8px] sm:text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] hidden md:block mb-0.5">Server Load</span>
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                     <div className="flex gap-0.5">
+                        <span className="w-0.5 sm:w-1 h-2 sm:h-3 bg-emerald-500 rounded-sm animate-pulse"></span>
+                        <span className="w-0.5 sm:w-1 h-2.5 sm:h-4 bg-emerald-500 rounded-sm animate-pulse delay-75"></span>
+                        <span className="w-0.5 sm:w-1 h-3 sm:h-5 bg-emerald-500 rounded-sm animate-pulse delay-150"></span>
+                     </div>
+                     <span className="text-[10px] sm:text-xs text-emerald-400 font-bold drop-shadow-sm flex items-center gap-1">
+                        <span className="hidden md:inline">Optimal</span>
+                        <span className="md:hidden uppercase tracking-widest font-mono text-[9px]">Server Load: Low</span>
+                     </span>
+                  </div>
+               </div>
+
+               <div className="h-6 w-px bg-white/10 hidden md:block"></div>
+
+               {/* Encryption */}
+               <div className="flex flex-col items-end pr-1 md:pr-0 border-l md:border-none border-white/10 pl-3 md:pl-0">
+                  <span className="text-[8px] sm:text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] hidden md:block mb-0.5">Encryption Protocol</span>
+                  <span className="text-[9px] sm:text-xs text-amber-400 font-black tracking-[0.1em] sm:tracking-widest flex items-center gap-1 sm:gap-1.5 drop-shadow-md">
+                     <Lock className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 opacity-80" /> AES-256-GCM
                   </span>
                </div>
-               <div className="flex flex-col items-end border-l border-white/10 pl-4 sm:pl-6">
-                  <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">Encryption</span>
-                  <span className="text-[10px] sm:text-xs text-amber-400 font-black tracking-widest flex items-center gap-1 drop-shadow-md">
-                     <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> AES-256-GCM
-                  </span>
-               </div>
+               
             </div>
          </div>
-         {/* Premium Loading Bar Tracker */}
-         <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-amber-500/10 to-transparent relative overflow-hidden">
-            <div className="absolute top-0 left-0 h-full w-[30%] bg-gradient-to-r from-transparent via-amber-400 to-transparent animate-[slide_3s_ease-in-out_infinite]"></div>
+
+         {/* Premium Loading Bar Tracker - ULTRA GLOWING */}
+         <div className="h-[2px] sm:h-[3px] w-full bg-amber-900/40 relative overflow-hidden flex shadow-[0_0_20px_rgba(245,158,11,0.5)] z-20">
+            {/* Core underlying pulse */}
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600 opacity-60 animate-[pulse-glow_2s_ease-in-out_infinite]"></div>
+            
+            {/* Fast electric slide */}
+            <div className="absolute top-0 left-0 h-full w-[40%] bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_15px_#ffffff,0_0_30px_#f59e0b] animate-[laser-slide_1.5s_linear_infinite]"></div>
+            
+            {/* Secondary intense glow */}
+            <div className="absolute top-0 right-0 h-full w-[30%] bg-gradient-to-r from-transparent via-amber-200 to-transparent shadow-[0_0_20px_#fcd34d] animate-[laser-slide_2.5s_ease-in-out_infinite_reverse]"></div>
+            
+            {/* Center spark point */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[3px] sm:h-[4px] w-[5%] bg-white rounded-full shadow-[0_0_20px_2px_#ffffff,0_0_40px_5px_#f59e0b] animate-pulse"></div>
          </div>
       </header>
 
@@ -309,73 +365,95 @@ export default function App() {
                <span className="relative z-10 mt-2 text-[10px] font-black uppercase tracking-[0.3em] text-amber-500 drop-shadow-md">Quantum Rolls</span>
             </div>
 
-            {/* Cluster Nodes */}
-            <div className="bg-[#0A0F1C]/80 border border-slate-800/60 rounded-xl p-4 backdrop-blur-md relative overflow-hidden shadow-lg">
-               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
-               <div className="flex justify-between items-center mb-5">
-                  <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                     <ShieldCheck className="w-4 h-4 text-emerald-400" /> Protection Status
-                  </h3>
-                  <div className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">ACTIVE</div>
-               </div>
-               
-               <div className="grid grid-cols-4 gap-2.5 mb-4">
-                  {Array.from({length: 16}).map((_, i) => {
-                     const isActive = Math.random() > 0.4;
-                     return (
-                     <div key={i} className={`h-8 rounded flex items-center justify-center border transition-colors duration-1000 ${
-                        isActive 
-                        ? 'border-emerald-900/50 bg-emerald-500/10 text-emerald-400 shadow-[inset_0_0_10px_rgba(16,185,129,0.1)]' 
-                        : 'border-slate-800/50 bg-[#05070A] text-slate-700'
-                     }`}>
-                        <Cpu className={`w-3.5 h-3.5 ${isActive ? 'animate-pulse' : ''}`} />
-                     </div>
-                  )})}
-               </div>
-               
-               <div className="text-[9px] text-slate-500 font-mono break-all leading-tight border-t border-slate-800 pt-3 mt-3">
-                  <span className="text-emerald-400/80 font-bold">ANTI-BAN HASH:</span> <br/>{hexLine}
+            {/* Cluster Nodes - ULTRA PREMIUM */}
+            <div className="relative group rounded-xl w-full">
+               <div className="absolute inset-0 bg-white/5 rounded-xl blur-[20px] opacity-60 group-hover:opacity-100 transition-opacity duration-700"></div>
+               <div className="relative bg-white/10 border border-white/20 rounded-xl p-5 backdrop-blur-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_0_20px_rgba(255,255,255,0.1)]">
+                  {/* Glowing borders */}
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
+                  <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-l from-transparent via-white/30 to-transparent"></div>
+                  <div className="absolute top-0 left-0 w-[1px] h-full bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
+                  <div className="absolute top-0 right-0 w-[1px] h-full bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
+                  
+                  {/* Scanline overlay */}
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
+                  <div className="absolute top-0 left-0 w-full h-[2px] bg-white/20 animate-[slide_3s_ease-in-out_infinite_alternate] shadow-[0_0_15px_rgba(255,255,255,0.5)] z-10 blur-[1px]"></div>
+
+                  <div className="flex justify-between items-center mb-5 relative z-10">
+                     <h3 className="text-[11px] sm:text-xs font-bold text-white uppercase tracking-[0.2em] flex items-center gap-2 drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]">
+                        <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]" /> Protection Status
+                     </h3>
+                     <div className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/40 font-black tracking-widest shadow-[0_0_15px_rgba(16,185,129,0.2)] animate-pulse">ACTIVE</div>
+                  </div>
+                  
+                  <div className="grid grid-cols-4 gap-2 sm:gap-2.5 mb-4 relative z-10">
+                     {Array.from({length: 16}).map((_, i) => {
+                        const isActive = Math.random() > 0.4;
+                        return (
+                        <div key={i} className={`h-8 sm:h-10 rounded flex items-center justify-center border transition-all duration-1000 ${
+                           isActive 
+                           ? 'border-emerald-500/50 bg-emerald-500/20 text-emerald-300 shadow-[inset_0_0_15px_rgba(16,185,129,0.3)] scale-100' 
+                           : 'border-white/10 bg-black/20 text-slate-500 scale-95'
+                        }`}>
+                           <Cpu className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isActive ? 'animate-pulse drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]' : ''}`} />
+                        </div>
+                     )})}
+                  </div>
+                  
+                  <div className="text-[9px] sm:text-[10px] text-white/70 font-mono break-all leading-relaxed border-t border-white/20 pt-3 relative z-10 bg-black/20 -mx-5 -mb-5 px-5 pb-5">
+                     <span className="text-white font-bold tracking-widest">ANTI-BAN HASH:</span> <br/><span className="text-white/50">{hexLine}</span>
+                  </div>
                </div>
             </div>
 
-            {/* Live Webhook Feed */}
-            <div className="bg-[#05070A]/80 border border-slate-800/80 rounded-xl flex-1 relative overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col p-1 backdrop-blur-md">
-               <div className="bg-[#0A0F1C]/80 border-b border-white/5 p-3 rounded-t-lg flex items-center justify-between z-10 relative">
-                  <h3 className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                     <Activity className="w-3.5 h-3.5 text-emerald-400" /> Webhook Stream
+            {/* Live Webhook Feed - ULTRA PREMIUM */}
+            <div className="group bg-white/10 border border-white/20 rounded-xl flex-1 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_0_20px_rgba(255,255,255,0.1)] flex flex-col p-1.5 backdrop-blur-2xl transition-all duration-500 hover:border-white/30">
+               {/* Border glow effects */}
+               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+               <div className="absolute top-0 left-0 w-[1px] h-full bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+               <div className="absolute pointer-events-none inset-0 bg-white/5 blur-3xl opacity-50"></div>
+               
+               <div className="bg-black/20 border-b border-white/20 p-3 sm:p-4 rounded-t-lg flex items-center justify-between z-10 relative backdrop-blur-md">
+                  <h3 className="text-[10px] sm:text-xs font-black text-white uppercase tracking-[0.25em] flex items-center gap-2.5 drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
+                     <Activity className="w-4 h-4 text-emerald-400 animate-pulse drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" /> Webhook Stream
                   </h3>
-                  <div className="flex items-center gap-2 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_5px_rgba(16,185,129,0.5)]"></span>
-                     <span className="text-[8px] font-bold font-mono text-emerald-400 tracking-widest">LIVE SYNC</span>
+                  <div className="flex items-center gap-2 bg-emerald-500/20 px-2.5 py-1 rounded shadow-[inset_0_0_10px_rgba(16,185,129,0.3)] border border-emerald-500/40">
+                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping absolute opacity-70"></span>
+                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 relative"></span>
+                     <span className="text-[9px] font-black font-mono text-emerald-400 tracking-[0.2em]">LIVE SYNC</span>
                   </div>
                </div>
-               <div className="bg-[#020305] flex-1 p-3 xl:p-4 rounded-b-lg relative overflow-hidden shadow-inner border border-white/5">
+               
+               <div className="bg-black/40 flex-1 p-3 xl:p-5 rounded-b-lg relative overflow-hidden border border-t-0 border-white/10 backdrop-blur-md">
                   {/* Digital Grid lines */}
-                  <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_2px,transparent_2px),linear-gradient(90deg,rgba(255,255,255,0.02)_2px,transparent_2px)] bg-[size:20px_20px] pointer-events-none z-0"></div>
+                  <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none z-0"></div>
+                  {/* Scanline overlay */}
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.08] pointer-events-none mix-blend-overlay z-0"></div>
+                  <div className="absolute top-0 left-0 w-full h-[150%] bg-gradient-to-b from-transparent via-white/10 to-transparent animate-[slide_3s_linear_infinite] shadow-[0_0_15px_rgba(255,255,255,0.2)] z-10 pointer-events-none"></div>
                   
-                  <div className="space-y-2 lg:space-y-3 h-full overflow-hidden relative z-10 flex flex-col justify-start">
+                  <div className="space-y-3 h-full overflow-hidden relative z-20 flex flex-col justify-start">
                      <AnimatePresence>
                         {activities.map((act) => (
                            <motion.div 
                               key={act.id}
-                              initial={{ opacity: 0, x: -10, backgroundColor: 'rgba(16,185,129,0.1)' }}
+                              initial={{ opacity: 0, x: -15, backgroundColor: 'rgba(255,255,255,0.1)' }}
                               animate={{ opacity: 1, x: 0, backgroundColor: 'transparent' }}
                               exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              className="text-[9px] xl:text-[10px] font-mono border-l-2 border-slate-700 hover:border-emerald-500/50 transition-colors pl-3 py-1 relative group"
+                              transition={{ duration: 0.6, ease: "easeOut" }}
+                              className="text-[10px] xl:text-[11px] font-mono border-l-[3px] border-white/20 hover:border-emerald-400 transition-all duration-300 pl-4 py-1.5 relative group hover:bg-white/5"
                            >
-                              <div className="text-slate-500 mb-0.5 flex items-center gap-1.5">
-                                 <ShieldCheck className="w-2.5 h-2.5 text-slate-600 group-hover:text-amber-500 transition-colors" /> 
-                                 <span className="opacity-70 group-hover:opacity-100">{act.time}</span>
-                                 <span className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity ml-1">- 200 OK</span>
+                              <div className="text-white/60 mb-1 flex items-center gap-2 font-bold uppercase tracking-wider">
+                                 <ShieldCheck className="w-3 h-3 text-white/50 group-hover:text-amber-400 transition-colors" /> 
+                                 <span className="opacity-80 group-hover:opacity-100 group-hover:text-white transition-colors">{act.time}</span>
+                                 <span className="text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity ml-2 bg-emerald-500/20 border border-emerald-500/40 px-1 rounded text-[8px] font-black">HTTP 200 OK</span>
                               </div>
-                              <div className="text-slate-300 whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-2">
-                                 <span className="text-emerald-500 font-bold opacity-50 group-hover:opacity-100">➔</span> {act.text}
+                              <div className="text-white font-medium whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-2 drop-shadow-[0_0_2px_rgba(0,0,0,1)]">
+                                 <span className="text-emerald-400 font-bold opacity-70 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all">➔</span> {act.text}
                               </div>
                            </motion.div>
                         ))}
                      </AnimatePresence>
-                     <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#020305] to-transparent pointer-events-none"></div>
+                     <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#02050A] via-[#02050A]/80 to-transparent pointer-events-none rounded-b-xl z-30"></div>
                   </div>
                </div>
             </div>
@@ -384,12 +462,73 @@ export default function App() {
          {/* MAIN INTERFACE CONTROLLER */}
          <div className="col-span-1 lg:col-span-9 xl:col-span-9 flex flex-col order-1 lg:order-2">
             
+            {/* 3D Dice Graphic - MOBILE ONLY */}
+            <div className="bg-[#1a150b]/80 border border-amber-500/30 rounded-xl p-4 backdrop-blur-md relative overflow-hidden shadow-[0_10px_30px_rgba(245,158,11,0.15)] flex flex-col items-center justify-center min-h-[140px] group lg:hidden mb-6 mt-[-10px]">
+               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent"></div>
+               <div className="absolute inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,transparent_50%,#f59e0b_100%)] opacity-20 animate-[spin_8s_linear_infinite] blur-xl"></div>
+               
+               <div className="relative z-20 w-full h-24 mb-1 flex items-center justify-center scale-90" style={{ perspective: '1200px' }}>
+                  {/* Fake floor shadow since we can't use drop-shadow on the 3D container */}
+                  <div className="absolute -bottom-2 w-16 h-4 bg-amber-600/50 blur-[10px] rounded-[100%] animate-pulse"></div>
+
+                  <div className="relative w-20 h-20 dice-cube">
+                     {/* Front (1) */}
+                     <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-[14px] border-[1.5px] border-amber-300/70 p-2 shadow-[inset_0_0_20px_rgba(255,255,255,0.7),inset_0_0_8px_rgba(0,0,0,0.1)] flex items-center justify-center" style={{ transform: 'rotateY(0deg) translateZ(40px)' }}>
+                        <div className="w-full h-full flex items-center justify-center relative z-10">
+                           <span className="w-5 h-5 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_3px_6px_rgba(0,0,0,0.5),0_2px_4px_rgba(255,255,255,0.6)]"></span>
+                        </div>
+                     </div>
+                     
+                     {/* Back (6) */}
+                     <div className="absolute inset-0 bg-gradient-to-tl from-amber-500 via-amber-600 to-orange-600 rounded-[14px] border-[1.5px] border-amber-400/70 p-2.5 shadow-[inset_0_0_20px_rgba(255,255,255,0.4),inset_0_0_8px_rgba(0,0,0,0.2)]" style={{ transform: 'rotateY(180deg) translateZ(40px)' }}>
+                        <div className="w-full h-full flex flex-col justify-between">
+                           <div className="flex justify-between w-full"><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span></div>
+                           <div className="flex justify-between w-full"><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span></div>
+                           <div className="flex justify-between w-full"><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span></div>
+                        </div>
+                     </div>
+
+                     {/* Right (3) */}
+                     <div className="absolute inset-0 bg-gradient-to-tr from-amber-400 via-amber-500 to-amber-600 rounded-[14px] border-[1.5px] border-amber-300/70 p-2.5 shadow-[inset_0_0_20px_rgba(255,255,255,0.5),inset_0_0_8px_rgba(0,0,0,0.15)] flex flex-col justify-between" style={{ transform: 'rotateY(90deg) translateZ(40px)' }}>
+                        <span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full place-self-end shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.3)]"></span>
+                        <span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full place-self-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.3)]"></span>
+                        <span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full place-self-start shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.3)]"></span>
+                     </div>
+
+                     {/* Left (4) */}
+                     <div className="absolute inset-0 bg-gradient-to-bl from-amber-500 via-orange-500 to-orange-600 rounded-[14px] border-[1.5px] border-amber-400/70 p-3 shadow-[inset_0_0_20px_rgba(255,255,255,0.3),inset_0_0_8px_rgba(0,0,0,0.2)]" style={{ transform: 'rotateY(-90deg) translateZ(40px)' }}>
+                        <div className="w-full h-full flex flex-col justify-between">
+                           <div className="flex justify-between w-full"><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span></div>
+                           <div className="flex justify-between w-full"><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),0_1px_2px_rgba(255,255,255,0.2)]"></span></div>
+                        </div>
+                     </div>
+
+                     {/* Top (2) */}
+                     <div className="absolute inset-0 bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 rounded-[14px] border-[1.5px] border-amber-200/70 p-2.5 shadow-[inset_0_0_25px_rgba(255,255,255,0.8),inset_0_0_8px_rgba(0,0,0,0.1)] flex justify-between" style={{ transform: 'rotateX(90deg) translateZ(40px)' }}>
+                        <span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full place-self-start shadow-[inset_0_3px_5px_rgba(0,0,0,0.4),0_1px_3px_rgba(255,255,255,0.4)]"></span>
+                        <span className="w-4 h-4 bg-gradient-to-b from-white to-gray-200 rounded-full place-self-end shadow-[inset_0_3px_5px_rgba(0,0,0,0.4),0_1px_3px_rgba(255,255,255,0.4)]"></span>
+                     </div>
+
+                     {/* Bottom (5) */}
+                     <div className="absolute inset-0 bg-gradient-to-t from-orange-500 via-orange-600 to-orange-700 rounded-[14px] border-[1.5px] border-orange-500/70 p-2.5 shadow-[inset_0_0_20px_rgba(0,0,0,0.4),inset_0_0_8px_rgba(0,0,0,0.3)]" style={{ transform: 'rotateX(-90deg) translateZ(40px)' }}>
+                        <div className="w-full h-full flex flex-col justify-between">
+                           <div className="flex justify-between w-full"><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-300 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></span><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-300 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></span></div>
+                           <div className="flex justify-center w-full"><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-300 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></span></div>
+                           <div className="flex justify-between w-full"><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-300 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></span><span className="w-4 h-4 bg-gradient-to-b from-white to-gray-300 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></span></div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <span className="relative z-10 mt-2 text-[10px] font-black uppercase tracking-[0.3em] text-amber-500 drop-shadow-md">Quantum Rolls</span>
+            </div>
+            
             {/* Page Title & Logo Above Card */}
             <motion.div 
                initial={{ opacity: 0, y: -20 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.8 }}
-               className="flex flex-col items-center justify-center mb-6 text-center relative z-20"
+               className="flex flex-col items-center justify-center mb-6 text-center relative z-20 bg-white/10 backdrop-blur-2xl border border-white/20 p-6 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_0_20px_rgba(255,255,255,0.1)]"
             >
                <motion.div 
                   animate={{ y: [-5, 5, -5], rotate: [-2, 2, -2] }}
@@ -407,22 +546,22 @@ export default function App() {
                   </span>
                </h1>
                <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
-                  <div className="flex items-center gap-1.5 text-[9px] md:text-[10px] text-slate-400 font-mono tracking-widest uppercase bg-[#0A0F1C]/80 border border-white/5 py-1 px-3 rounded-full shadow-inner backdrop-blur-md">
+                  <div className="flex items-center gap-1.5 text-[9px] md:text-[10px] text-slate-400 font-mono tracking-widest uppercase bg-black/40 border border-white/10 py-1.5 px-3 rounded shadow-inner backdrop-blur-md">
                      <Server className="w-3 h-3 text-blue-400" />
                      Mainnet <strong className="text-blue-400 font-black">v9.2.4</strong>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[9px] md:text-[10px] text-slate-400 font-mono tracking-widest uppercase bg-[#0A0F1C]/80 border border-white/5 py-1 px-3 rounded-full shadow-inner backdrop-blur-md">
+                  <div className="flex items-center gap-1.5 text-[9px] md:text-[10px] text-slate-400 font-mono tracking-widest uppercase bg-black/40 border border-white/10 py-1.5 px-3 rounded shadow-inner backdrop-blur-md">
                      <ShieldCheck className="w-3 h-3 text-emerald-400" />
                      Bypass: <strong className="text-emerald-400 font-black drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]">Undetected</strong>
                   </div>
-                  <div className="hidden sm:flex items-center gap-1.5 text-[9px] md:text-[10px] text-slate-400 font-mono tracking-widest uppercase bg-[#0A0F1C]/80 border border-white/5 py-1 px-3 rounded-full shadow-inner backdrop-blur-md">
+                  <div className="hidden sm:flex items-center gap-1.5 text-[9px] md:text-[10px] text-slate-400 font-mono tracking-widest uppercase bg-black/40 border border-white/10 py-1.5 px-3 rounded shadow-inner backdrop-blur-md">
                      <Activity className="w-3 h-3 text-amber-400" />
                      Load: <strong className="text-amber-400 font-black">42%</strong>
                   </div>
                </div>
             </motion.div>
 
-            <div className="bg-white/[0.03] backdrop-blur-[40px] saturate-[150%] border border-red-500/50 ring-2 ring-red-500 rounded-3xl shadow-[0_0_40px_rgba(255,0,0,0.7),0_30px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.1)] relative overflow-hidden flex flex-col min-h-[550px] lg:flex-1">
+            <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.3),inset_0_0_30px_rgba(255,255,255,0.15)] relative overflow-hidden flex flex-col min-h-[550px] lg:flex-1">
                
                {/* Terminal/Window Header Decor */}
                <div className="h-10 sm:h-14 border-b border-white/[0.08] flex items-center px-3 sm:px-6 gap-2 sm:gap-4 bg-white/[0.02]">
@@ -467,11 +606,44 @@ export default function App() {
                               </div>
                            </div>
 
-                           <div className="mb-8">
-                              <h2 className="text-2xl sm:text-4xl font-light text-white mb-2 sm:mb-3 flex items-center gap-2 sm:gap-3 tracking-tight">
-                                 Player <strong className="font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 drop-shadow">Verification</strong>
-                              </h2>
-                              <p className="text-slate-400 text-sm font-medium">Please enter your exact Monopoly Go username to connect securely to the database.</p>
+                           <div className="mb-8 relative group">
+                              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-emerald-500/5 to-transparent rounded-2xl blur-[20px] opacity-70 group-hover:opacity-100 transition-opacity duration-700"></div>
+                              <div className="relative bg-[#060913]/90 backdrop-blur-2xl border border-slate-700/50 p-6 sm:p-8 rounded-2xl shadow-[inset_0_0_30px_rgba(255,255,255,0.02),0_15px_50px_rgba(0,0,0,0.6)] overflow-hidden">
+                                 {/* Glowing border effects */}
+                                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"></div>
+                                 <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-l from-transparent via-emerald-500/50 to-transparent"></div>
+                                 <div className="absolute top-0 left-0 w-[1px] h-full bg-gradient-to-b from-transparent via-amber-500/20 to-transparent"></div>
+                                 <div className="absolute top-0 right-0 w-[1px] h-full bg-gradient-to-b from-transparent via-emerald-500/20 to-transparent"></div>
+
+                                 {/* Dynamic animated glow ball */}
+                                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-amber-500/10 rounded-full blur-[40px] animate-pulse"></div>
+                                 <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-[40px] animate-[pulse_3s_ease-in-out_infinite] delay-1000"></div>
+                                 
+                                 {/* Background Pattern */}
+                                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
+
+                                 <h2 className="text-2xl sm:text-4xl font-light text-white mb-4 sm:mb-5 flex items-center gap-3 sm:gap-4 tracking-tight relative z-10">
+                                    <div className="p-2 sm:p-2.5 bg-gradient-to-br from-[#0A1020] to-[#0D152A] rounded-xl border border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.2),inset_0_2px_15px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform duration-500">
+                                       <Search className="w-5 h-5 sm:w-7 sm:h-7 text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.6)]" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                       <span className="text-[10px] sm:text-xs text-amber-500/80 font-bold uppercase tracking-[0.3em] mb-1">Step 01</span>
+                                       <span className="flex items-center gap-2">Player <strong className="font-black bg-clip-text text-transparent bg-gradient-to-r from-white via-amber-100 to-amber-200 drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]">Verification</strong></span>
+                                    </div>
+                                 </h2>
+                                 
+                                 <div className="bg-[#030508]/80 border border-white/5 rounded-xl p-4 sm:p-5 relative z-10 shadow-[inset_0_2px_20px_rgba(0,0,0,0.5)]">
+                                    <div className="flex items-start gap-3 sm:gap-4">
+                                       <div className="mt-1 flex-shrink-0">
+                                          <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-emerald-500 animate-ping absolute opacity-70"></div>
+                                          <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-emerald-400 relative shadow-[0_0_10px_rgba(52,211,153,1)]"></div>
+                                       </div>
+                                       <p className="text-slate-400 text-xs sm:text-sm font-medium leading-relaxed">
+                                          Please enter your <span className="text-white font-bold">exact Monopoly Go username</span> to establish a secure encrypted tunnel to the <span className="text-emerald-400 font-mono tracking-widest text-[10px] sm:text-xs uppercase bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20 ml-1">Mainnet Database</span>.
+                                       </p>
+                                    </div>
+                                 </div>
+                              </div>
                            </div>
 
                            <form onSubmit={handleConnect} className="space-y-6">
@@ -1005,19 +1177,19 @@ export default function App() {
                initial={{ opacity: 0, y: 50, scale: 0.9 }}
                animate={{ opacity: 1, y: 0, scale: 1 }}
                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-               className="fixed bottom-6 right-6 z-50 bg-[#0A0F1C]/95 backdrop-blur-xl border border-amber-500/30 shadow-[0_15px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(245,158,11,0.15)] p-4 rounded-2xl flex items-center gap-4 min-w-[300px]"
+               className="fixed bottom-6 sm:bottom-8 right-6 sm:right-8 z-50 bg-white/90 backdrop-blur-2xl border border-white shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_0_20px_rgba(255,255,255,1)] p-4 rounded-2xl flex items-center gap-4 min-w-[300px] hover:bg-white transition-colors duration-300"
             >
-               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-900/40 border border-amber-500/50 flex flex-col items-center justify-center p-1 shadow-inner relative overflow-hidden">
+               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400/40 to-amber-600/40 border border-amber-500/50 flex flex-col items-center justify-center p-1 shadow-inner relative overflow-hidden">
                   <div className="absolute inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,#f59e0b_0%,transparent_50%,#f59e0b_100%)] opacity-30 animate-spin blur-md"></div>
                   <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3b2/512.webp" alt="Dice" className="w-6 h-6 object-contain filter drop-shadow-md relative z-10" />
                </div>
                <div className="flex flex-col flex-1">
                   <div className="flex items-center justify-between pointer-events-none mb-1">
-                     <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest bg-slate-800/50 px-2 py-0.5 rounded border border-slate-700">{toastData.user}</span>
-                     <span className="text-[9px] font-bold text-emerald-400 flex items-center gap-1 shadow-sm"><CheckCircle2 className="w-3 h-3" /> VERIFIED</span>
+                     <span className="text-[10px] font-black text-slate-700 uppercase tracking-widest bg-slate-200/80 px-2 py-0.5 rounded border border-slate-300">{toastData.user}</span>
+                     <span className="text-[9px] font-black text-emerald-600 flex items-center gap-1 shadow-sm"><CheckCircle2 className="w-3 h-3" /> VERIFIED</span>
                   </div>
-                  <span className="text-[13px] font-black text-white self-start">
-                     Received <strong className="text-amber-400 drop-shadow-md">{toastData.rolls.toLocaleString()}</strong> Rolls
+                  <span className="text-[13px] font-black text-slate-900 self-start">
+                     Received <strong className="text-amber-600 drop-shadow-sm">{toastData.rolls.toLocaleString()}</strong> Rolls
                   </span>
                </div>
             </motion.div>

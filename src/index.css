@@ -6,6 +6,10 @@
   --font-heading: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 @media print {
   @page {
     size: A4 portrait;
